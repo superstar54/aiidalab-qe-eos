@@ -34,7 +34,7 @@ setup(
         ],
     },
     install_requires=[
-        
+
     ],
     package_data={},
     python_requires=">=3.6",

@@ -34,6 +34,9 @@ class EOSWorkChain(WorkChain):
             cls.result,
         )
         spec.output('eos', valid_type=Dict)
+        spec.output('v0', valid_type=Float)
+        spec.output('e0', valid_type=Float)
+        spec.output('B', valid_type=Float)
         spec.exit_code(400, 'ERROR_NEGATIVE_NUMBER', message='The result is a negative number.')
 
     @classmethod
@@ -51,7 +54,7 @@ class EOSWorkChain(WorkChain):
         pw_code = load_code(codes.get('pw_code'))
         args = (pw_code, structure, protocol)
         scf = PwBaseWorkChain.get_builder_from_protocol(
-            *args, 
+            *args,
             overrides=scf_overrides,
             **scf_parameters,
         )
@@ -75,11 +78,12 @@ class EOSWorkChain(WorkChain):
     def run_eos(self):
         """Run all scf calculations."""
         import numpy as np
-        factors = {f"s{x}":x for x in np.linspace(1-self.inputs.scale.value, 1+self.inputs.scale.value, self.inputs.npoint.value)}
-        self.ctx.factors = factors
-        structure = self.inputs.structure
+        factors = np.linspace(1-self.inputs.scale.value, 1+self.inputs.scale.value, self.inputs.npoint.value)
+        labels = []
         futures = {}
-        for label, factor in factors.items():
+        structure = self.inputs.structure
+        for i, factor in enumerate(factors):
+            label = f"s_{i}"
             atoms = structure.get_ase()
             atoms.set_cell(atoms.get_cell()*factor, scale_atoms = True)
             scaled_structure = StructureData(ase=atoms)
@@ -90,20 +94,29 @@ class EOSWorkChain(WorkChain):
             inputs = prepare_process_inputs(PwBaseWorkChain, inputs)
             running = self.submit(PwBaseWorkChain, **inputs)
             futures[label] = running
+            labels.append(label)
             self.report(f"Running an SCF calculation with scale factor {factor}")
-        self.report(f"jobs: {futures}")
+        self.ctx.labels = labels
         return ToContext(**futures)
 
 
     def result(self):
         """Add the result to the outputs."""
+        from ase.eos import EquationOfState
         vs = []
         es = []
-        self.report("factors: ", self.ctx.factors)
-        for label, factor in self.ctx.factors.items():
+        self.report(f"keys: {self.ctx.keys()}")
+        for label in self.ctx.labels:
             result = self.ctx[label].outputs.output_parameters
             vs.append(result.dict.volume)
             es.append(result.dict.energy)
             unit = result.dict.energy_units
-        eos = {"volume": vs, "energy": es, "unit": unit}
-        self.out("eos", Dict(eos))
+        eos = Dict({"volume": vs, "energy": es, "unit": unit})
+        eos.store()
+        #
+        eos = EquationOfState(volumes, energies)
+        v0, e0, B = eos.fit()
+        self.out("eos", eos)
+        self.out("v0", v0)
+        self.out("e0", e0)
+        self.out("B", B)

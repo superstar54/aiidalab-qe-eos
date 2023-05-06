@@ -4,3 +4,12 @@
 [![PyPI][pypi-badge]][pypi-link]
 
 A demonstration of creating a plugin for AiiDAlab QE. The goal is to create a plugin package for the Equation of State.
+
+
+
+
+## pre-commit
+```
+pre-commit sample-config > .pre-commit-config.yaml
+pre-commit install
+```

@@ -12,6 +12,8 @@ from aiida.orm import Float, Int
 
 class EOSSettings(Panel):
 
+    name = "EOS Settings"
+
     def __init__(self, **kwargs):
         self.settings_title = ipw.HTML(
             """<div style="padding-top: 0px; padding-bottom: 0px">
@@ -38,7 +40,7 @@ class EOSSettings(Panel):
             disabled=False,
             style={"description_width": "initial"},
         )
-        
+
         children=[
                 self.settings_title,
                 self.settings_help,
