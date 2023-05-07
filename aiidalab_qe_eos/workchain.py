@@ -34,9 +34,6 @@ class EOSWorkChain(WorkChain):
             cls.result,
         )
         spec.output('eos', valid_type=Dict)
-        spec.output('v0', valid_type=Float)
-        spec.output('e0', valid_type=Float)
-        spec.output('B', valid_type=Float)
         spec.exit_code(400, 'ERROR_NEGATIVE_NUMBER', message='The result is a negative number.')
 
     @classmethod
@@ -103,20 +100,22 @@ class EOSWorkChain(WorkChain):
     def result(self):
         """Add the result to the outputs."""
         from ase.eos import EquationOfState
-        vs = []
-        es = []
+        volumes = []
+        energies = []
         self.report(f"keys: {self.ctx.keys()}")
         for label in self.ctx.labels:
             result = self.ctx[label].outputs.output_parameters
-            vs.append(result.dict.volume)
-            es.append(result.dict.energy)
+            volumes.append(result.dict.volume)
+            energies.append(result.dict.energy)
             unit = result.dict.energy_units
-        eos = Dict({"volume": vs, "energy": es, "unit": unit})
-        eos.store()
         #
         eos = EquationOfState(volumes, energies)
         v0, e0, B = eos.fit()
+        eos = Dict({"volumes": volumes, "energies": energies,
+                    "unit": unit,
+                    "v0": v0,
+                    "e0": e0,
+                    "B": B,
+        })
+        eos.store()
         self.out("eos", eos)
-        self.out("v0", v0)
-        self.out("e0", e0)
-        self.out("B", B)

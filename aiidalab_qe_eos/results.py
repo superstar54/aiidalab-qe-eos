@@ -37,8 +37,8 @@ class EOSResults(ResultPanel):
         g.layout.yaxis.title = "Energy (eV)"
         #
         eos = self.node.outputs.eos.get_dict()
-        volumes = eos["volume"]
-        energies = eos["energy"]
+        volumes = eos["volumes"]
+        energies = eos["energies"]
         eos = EquationOfState(volumes, energies, eos="birchmurnaghan")
         v0, e0, B = eos.fit()
         plotdata = eos.getplotdata()

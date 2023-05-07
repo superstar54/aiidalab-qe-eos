@@ -20,17 +20,20 @@ setup(
     classifiers=[],
     packages=find_packages(),
     entry_points={
-        "aiidalab_qe_configuration": [
+        "aiidalab_qe.structure.importer": [
+            "eos = aiidalab_qe_eos.structure:EOSStructure",
+        ],
+        "aiidalab_qe.configuration": [
             "eos = aiidalab_qe_eos.configuration:EOSSettings",
         ],
-        "aiidalab_qe_result": [
-            "eos = aiidalab_qe_eos.results:EOSResults",
-        ],
-        "aiidalab_qe_property": [
+        "aiidalab_qe.property": [
             "eos = aiidalab_qe_eos.property:EOSProperty",
         ],
-        "aiidalab_qe_subworkchain": [
+        "aiidalab_qe.subworkchain": [
             "eos = aiidalab_qe_eos.workchain:EOSWorkChain",
+        ],
+        "aiidalab_qe.result": [
+            "eos = aiidalab_qe_eos.results:EOSResults",
         ],
     },
     install_requires=[
