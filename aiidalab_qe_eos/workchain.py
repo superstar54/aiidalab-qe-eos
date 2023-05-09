@@ -11,6 +11,7 @@ PwBaseWorkChain = WorkflowFactory('quantumespresso.pw.base')
 
 class EOSWorkChain(WorkChain):
     """WorkChain to calcalculate the equation of state of a crystal."""
+    label = "eos"
 
     @classmethod
     def define(cls, spec):
@@ -39,38 +40,25 @@ class EOSWorkChain(WorkChain):
     @classmethod
     def get_builder_from_protocol(
         cls,
-        codes=None,
+        pw_code=None,
         structure=None,
+        protocol="fast",
+        overrides=None,
         parameters=None,
     ):
         builder = cls.get_builder()
         builder.structure = structure
-        protocol = parameters["basic"].get('protocol', "fast")
-        scf_parameters, scf_overrides = cls.get_scf_parameters(parameters)
         # scf
-        pw_code = load_code(codes.get('pw_code'))
         args = (pw_code, structure, protocol)
         scf = PwBaseWorkChain.get_builder_from_protocol(
             *args,
-            overrides=scf_overrides,
-            **scf_parameters,
+            overrides=overrides,
+            **parameters,
         )
         builder.scf = scf
         builder.scale = parameters["eos"]["scale"]
         builder.npoint = parameters["eos"]["npoint"]
         return builder
-
-    @classmethod
-    def get_scf_parameters(cls, parameters):
-        # developer should get the plugin parameters and override from the parameters
-        new_parameters = parameters["basic"]
-        pw = parameters["advance"].get("pw", {})
-        pw["pseudo_family"] = parameters["advance"].get("pseudo_family", None)
-        overrides = {
-            "pw": pw,
-        }
-
-        return new_parameters, overrides
 
     def run_eos(self):
         """Run all scf calculations."""
@@ -119,3 +107,23 @@ class EOSWorkChain(WorkChain):
         })
         eos.store()
         self.out("eos", eos)
+
+
+def get_builder(codes, structure, parameters):
+    protocol = parameters["basic"].pop('protocol', "fast")
+    pw_code = load_code(codes.get('pw_code'))
+    pw = parameters["advance"].get("pw", {})
+    pw["pseudo_family"] = parameters["advance"].get("pseudo_family", None)
+    overrides = {
+        "pw": pw,
+    }
+    builder = EOSWorkChain.get_builder_from_protocol(
+                pw_code=pw_code,
+                structure=structure,
+                protocol=protocol,
+                overrides=overrides,
+                parameters=parameters,
+            )
+    return builder
+
+subworkchain = [EOSWorkChain, get_builder]

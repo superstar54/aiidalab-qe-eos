@@ -12,7 +12,7 @@ from aiida.orm import Float, Int
 
 class EOSSettings(Panel):
 
-    name = "EOS Settings"
+    title = "EOS Settings"
 
     def __init__(self, **kwargs):
         self.settings_title = ipw.HTML(
@@ -41,13 +41,13 @@ class EOSSettings(Panel):
             style={"description_width": "initial"},
         )
 
-        children=[
+        self.children=[
                 self.settings_title,
                 self.settings_help,
                 self.scale,
                 self.npoint,
             ]
-        super().__init__(children, **kwargs)
+        super().__init__(**kwargs)
 
     def get_panel_value(self):
         """Return a dictionary with the input parameters for the plugin."""
@@ -55,6 +55,7 @@ class EOSSettings(Panel):
             "scale": Float(self.scale.value),
             "npoint": Int(self.npoint.value),
         }
+
     def load_panel_value(self, input_dict):
         """Load a dictionary with the input parameters for the plugin."""
         self.scale.value = input_dict.get("scale", 1)

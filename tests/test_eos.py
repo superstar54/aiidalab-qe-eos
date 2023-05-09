@@ -40,6 +40,7 @@ def test_steps():
     s2 = app.steps.steps[1][1]
     s2.workchain_settings.relax_type.value = "none"
     s2.workchain_settings.properties["eos"].run.value = True
+    # s2.workchain_settings.properties["hello_world"].run.value = True
     s2.basic_settings.workchain_protocol.value = "fast"
     s2.confirm()
     # step 3

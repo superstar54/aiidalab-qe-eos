@@ -14,7 +14,7 @@ setup(
     description="A aiidalab-qe plugin to calculate the equation of state of a crystal.",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/superstar54/aiidalab-qe-eos-plugin",
+    url="https://github.com/superstar54/aiidalab-qe-eos",
     author="Xing Wang",
     author_email="xingwang1991@gmail.com",
     classifiers=[],
@@ -30,7 +30,7 @@ setup(
             "eos = aiidalab_qe_eos.property:EOSProperty",
         ],
         "aiidalab_qe.subworkchain": [
-            "eos = aiidalab_qe_eos.workchain:EOSWorkChain",
+            "eos = aiidalab_qe_eos.workchain:subworkchain",
         ],
         "aiidalab_qe.result": [
             "eos = aiidalab_qe_eos.results:EOSResults",

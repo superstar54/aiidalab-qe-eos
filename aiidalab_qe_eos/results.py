@@ -12,16 +12,8 @@ import traitlets
 
 
 class EOSResults(ResultPanel):
-    name = "EOS"
-
-    def __init__(self, qeapp_node, **kwargs):
-        self.qeapp_node = qeapp_node
-        self.node = qeapp_node.base.links.get_outgoing().get_node_by_label("eos")
-        self._update_view()
-        super().__init__(
-            children=self.children,
-            **kwargs,
-        )
+    title = "EOS"
+    workchain_label = "eos"
 
     def _update_view(self):
         import plotly.graph_objects as go
