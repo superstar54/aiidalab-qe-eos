@@ -50,5 +50,6 @@ def test_steps():
     assert s3.state == s3.State.CONFIGURED
     s3.resources_config.num_cpus.value = 4
     assert s3.resources_config.num_cpus.value == 4
+    print(s3.get_builder())
     s3.submit()
     assert s3.state == was.State.SUCCESS

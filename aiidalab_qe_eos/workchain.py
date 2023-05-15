@@ -112,10 +112,8 @@ class EOSWorkChain(WorkChain):
 def get_builder(codes, structure, parameters):
     protocol = parameters["basic"].pop('protocol', "fast")
     pw_code = load_code(codes.get('pw_code'))
-    pw = parameters["advance"].get("pw", {})
-    pw["pseudo_family"] = parameters["advance"].get("pseudo_family", None)
     overrides = {
-        "pw": pw,
+        "pw": parameters["advance"],
     }
     builder = EOSWorkChain.get_builder_from_protocol(
                 pw_code=pw_code,
@@ -126,4 +124,4 @@ def get_builder(codes, structure, parameters):
             )
     return builder
 
-subworkchain = [EOSWorkChain, get_builder]
+workchain_and_builder = [EOSWorkChain, get_builder]

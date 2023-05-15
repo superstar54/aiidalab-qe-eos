@@ -2,16 +2,14 @@
 
 Authors:
 
-    * Carl Simon Adorf <simon.adorf@epfl.ch>
+    * Xing Wang <xing.wang@psi.ch>
 """
 
 from aiidalab_qe.panel import ResultPanel
 import ipywidgets as ipw
-import nglview
-import traitlets
 
 
-class EOSResults(ResultPanel):
+class Result(ResultPanel):
     title = "EOS"
     workchain_label = "eos"
 

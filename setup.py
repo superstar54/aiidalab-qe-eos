@@ -23,17 +23,8 @@ setup(
         "aiidalab_qe.structure.importer": [
             "eos = aiidalab_qe_eos.structure:EOSStructure",
         ],
-        "aiidalab_qe.configuration": [
-            "eos = aiidalab_qe_eos.configuration:EOSSettings",
-        ],
         "aiidalab_qe.property": [
-            "eos = aiidalab_qe_eos.property:EOSProperty",
-        ],
-        "aiidalab_qe.subworkchain": [
-            "eos = aiidalab_qe_eos.workchain:subworkchain",
-        ],
-        "aiidalab_qe.result": [
-            "eos = aiidalab_qe_eos.results:EOSResults",
+            "eos = aiidalab_qe_eos:property",
         ],
     },
     install_requires=[

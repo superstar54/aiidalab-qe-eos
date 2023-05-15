@@ -10,7 +10,7 @@ from aiidalab_qe.panel import Panel
 from aiida.orm import Float, Int
 
 
-class EOSSettings(Panel):
+class Setting(Panel):
 
     title = "EOS Settings"
 
