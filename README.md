@@ -1,15 +1,25 @@
 # AiiDAlab_QE EOS
 
-[![Github-CI][github-ci]][github-link]
-[![PyPI][pypi-badge]][pypi-link]
-
-A demonstration of creating a plugin for AiiDAlab QE. The goal is to create a plugin package for the Equation of State.
+A demonstration of creating a plugin to do the Equation of State (EOS) calculation inside AiiDAlab-QE.
 
 
+For the idea of Qeapp plugin implementation, please read here: https://hackmd.io/@aiidalab/BJreq_UXn
 
+## Installation
 
-## pre-commit
+In order to load this plugin into QeApp, you need switch `use_plugin` branch for your `aiidalab-qe`.
+
+Then, install this pakcage by:
+
+```shell
+pip install -e .
 ```
-pre-commit sample-config > .pre-commit-config.yaml
-pre-commit install
-```
+
+## License
+
+MIT
+
+## Contact
+
+xing.wang@psi.ch
+
