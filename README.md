@@ -7,9 +7,9 @@ For the idea of Qeapp plugin implementation, please read here: https://hackmd.io
 
 ## Installation
 
-In order to load this plugin into QeApp, you need switch `use_plugin` branch for your `aiidalab-qe`.
+In order to load this plugin into QeApp, you need to switch to the `use_plugin` branch for your `aiidalab-qe`.
 
-Then, install this pakcage by:
+Then, install this plugin by:
 
 ```shell
 pip install -e .
