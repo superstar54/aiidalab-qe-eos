@@ -1,17 +1,19 @@
-"""Results view widgets (MOVE TO OTHER MODULE!)
+"""Results view widgets
 
 Authors:
 
     * Xing Wang <xing.wang@psi.ch>
 """
 
-from aiidalab_qe.panel import ResultPanel
+from aiidalab_qe.common.panel import ResultPanel
 import ipywidgets as ipw
 
 
 class Result(ResultPanel):
     title = "EOS"
-    workchain_label = "eos"
+
+    def __init__(self, node=None, **kwargs):
+        super().__init__(node=node, identifier="eos", **kwargs)
 
     def _update_view(self):
         import plotly.graph_objects as go
@@ -26,7 +28,7 @@ class Result(ResultPanel):
         g.layout.xaxis.title = "Volume (A^3)"
         g.layout.yaxis.title = "Energy (eV)"
         #
-        eos = self.node.outputs.eos.get_dict()
+        eos = self.outputs.eos.get_dict()
         volumes = eos["volumes"]
         energies = eos["energies"]
         eos = EquationOfState(volumes, energies, eos="birchmurnaghan")

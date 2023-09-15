@@ -1,15 +1,15 @@
 from aiidalab_qe_eos.setting import Setting
 from aiidalab_qe_eos.workchain import workchain_and_builder
 from aiidalab_qe_eos.result import Result
-from aiidalab_qe.panel import OutlinePanel
+from aiidalab_qe.common.panel import OutlinePanel
 
 
-class Outline(OutlinePanel):
+class EosOutline(OutlinePanel):
     title = "Equation of State (EOS)"
 
 
-property ={
-"outline": Outline,
+eos ={
+"outline": EosOutline,
 "setting": Setting,
 "workchain": workchain_and_builder,
 "result": Result,

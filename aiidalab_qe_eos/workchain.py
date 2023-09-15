@@ -1,9 +1,10 @@
-"""Implementation of the MultiplyAddWorkChain for testing and demonstration purposes."""
+"""Implementation of the EOSWorkChain for testing and demonstration purposes."""
 from aiida.common import AttributeDict
 from aiida.engine import ToContext, WorkChain, calcfunction
 from aiida.orm import AbstractCode, Int, Float, Dict, Code, StructureData, load_code
 from aiida.plugins import WorkflowFactory
 from aiida_quantumespresso.utils.mapping import prepare_process_inputs
+from aiida_quantumespresso.common.types import ElectronicType, SpinType
 
 
 PwBaseWorkChain = WorkflowFactory('quantumespresso.pw.base')
@@ -45,19 +46,21 @@ class EOSWorkChain(WorkChain):
         protocol="fast",
         overrides=None,
         parameters=None,
+        **kwargs,
     ):
         builder = cls.get_builder()
         builder.structure = structure
         # scf
-        args = (pw_code, structure, protocol)
         scf = PwBaseWorkChain.get_builder_from_protocol(
-            *args,
+            code=pw_code,
+            structure=structure,
+            protocol=protocol,
             overrides=overrides,
-            **parameters,
+            **kwargs,
         )
         builder.scf = scf
-        builder.scale = parameters["eos"]["scale"]
-        builder.npoint = parameters["eos"]["npoint"]
+        builder.scale = parameters["scale"]
+        builder.npoint = parameters["npoint"]
         return builder
 
     def run_eos(self):
@@ -109,19 +112,26 @@ class EOSWorkChain(WorkChain):
         self.out("eos", eos)
 
 
-def get_builder(codes, structure, parameters):
-    protocol = parameters["basic"].pop('protocol', "fast")
-    pw_code = load_code(codes.get('pw_code'))
+def get_builder(codes, structure, parameters, **kwargs):
+    protocol = parameters["workchain"].pop('protocol', "fast")
+    pw_code = codes.get("pw_code", None)
     overrides = {
-        "pw": parameters["advance"],
+        "pw": parameters["advanced"],
     }
     builder = EOSWorkChain.get_builder_from_protocol(
                 pw_code=pw_code,
                 structure=structure,
                 protocol=protocol,
+                electronic_type=ElectronicType(parameters["workchain"]["electronic_type"]),
+                spin_type=SpinType(parameters["workchain"]["spin_type"]),
+                initial_magnetic_moments=parameters["advanced"]["initial_magnetic_moments"],
+                parameters=parameters["eos"],
                 overrides=overrides,
-                parameters=parameters,
+                **kwargs,
             )
     return builder
 
-workchain_and_builder = [EOSWorkChain, get_builder]
+workchain_and_builder = {
+    "workchain": EOSWorkChain, 
+    "get_builder": get_builder,
+}

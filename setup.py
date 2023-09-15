@@ -20,11 +20,8 @@ setup(
     classifiers=[],
     packages=find_packages(),
     entry_points={
-        "aiidalab_qe.structure.importer": [
-            "eos = aiidalab_qe_eos.structure:EOSStructure",
-        ],
-        "aiidalab_qe.property": [
-            "eos = aiidalab_qe_eos:property",
+        "aiidalab_qe.properties": [
+            "eos = aiidalab_qe_eos:eos",
         ],
     },
     install_requires=[

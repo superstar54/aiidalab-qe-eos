@@ -6,13 +6,14 @@ Authors:
     * Xing Wang <xing.wang@psi.ch>
 """
 import ipywidgets as ipw
-from aiidalab_qe.panel import Panel
+from aiidalab_qe.common.panel import Panel
 from aiida.orm import Float, Int
 
 
 class Setting(Panel):
 
     title = "EOS Settings"
+    identifier = "eos"
 
     def __init__(self, **kwargs):
         self.settings_title = ipw.HTML(

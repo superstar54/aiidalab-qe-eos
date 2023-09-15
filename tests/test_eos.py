@@ -15,11 +15,11 @@ def test_steps():
     from aiidalab_widgets_base import WizardAppWidgetStep
     from ase.io import read
 
-    from aiidalab_qe.app import QEApp
-    from aiidalab_qe.structures import Examples
+    from aiidalab_qe.app.main import App
+    from aiidalab_qe.app.structure import Examples
 
     #
-    app = QEApp()
+    app = App(qe_auto_setup=False)
     was = WizardAppWidgetStep()
     # step 1
     # select structure
