@@ -1,6 +1,7 @@
-from aiidalab_qe_eos.setting import Setting
-from aiidalab_qe_eos.workchain import workchain_and_builder
-from aiidalab_qe_eos.result import Result
+from .setting import Setting
+from .workchain import workchain_and_builder
+from .result import Result
+from .structure import EOSStructure
 from aiidalab_qe.common.panel import OutlinePanel
 
 
@@ -10,6 +11,7 @@ class EosOutline(OutlinePanel):
 
 eos ={
 "outline": EosOutline,
+"importer": EOSStructure,
 "setting": Setting,
 "workchain": workchain_and_builder,
 "result": Result,
