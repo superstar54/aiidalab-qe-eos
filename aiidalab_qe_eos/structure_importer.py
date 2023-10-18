@@ -2,14 +2,14 @@ import ipywidgets as ipw
 import traitlets as tl
 from ase import Atoms
 
-class EOSStructure(ipw.VBox):
+class StructureImporter(ipw.VBox):
     """Create structure use ASE builder."""
 
     structure = tl.Instance(Atoms, allow_none=True)
 
-    def __init__(self, title="From ASE"):
+    def __init__(self, title="EOS importer"):
         self.title = title
-        self.bulk_symbol = ipw.Text(placeholder="Au")
+        self.bulk_symbol = ipw.Text(placeholder="Input the symbol of the element")
         self.create_bulk_structure_btn = ipw.Button(
             description="Generate bulk",
             button_style="primary",
@@ -17,7 +17,7 @@ class EOSStructure(ipw.VBox):
         )
         self.create_bulk_structure_btn.on_click(self._on_bulk_button_pressed)
 
-        self.fcc111_symbol = ipw.Text(placeholder="Au")
+        self.fcc111_symbol = ipw.Text(placeholder="Input the symbol of the element")
         self.create_fcc111_structure_btn = ipw.Button(
             description="FCC111 surface",
             button_style="primary",
