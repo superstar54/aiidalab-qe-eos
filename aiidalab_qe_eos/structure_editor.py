@@ -34,7 +34,7 @@ class StructureEditor(ipw.VBox):
                                             value=False,
                                             indent=False,
                                             )
-        apply_surface_indices = ipw.Button(description="Apply transformation")
+        apply_surface_indices = ipw.Button(description="Generate surface")
         apply_surface_indices.on_click(self.apply_surface_indices)
         super().__init__(
             children=[
