@@ -1,7 +1,7 @@
 """Implementation of the EOSWorkChain for testing and demonstration purposes."""
 from aiida.common import AttributeDict
-from aiida.engine import ToContext, WorkChain, calcfunction
-from aiida.orm import AbstractCode, Int, Float, Dict, Code, StructureData, load_code
+from aiida.engine import ToContext, WorkChain
+from aiida.orm import Int, Float, Dict, StructureData
 from aiida.plugins import WorkflowFactory
 from aiida_quantumespresso.utils.mapping import prepare_process_inputs
 from aiida_quantumespresso.common.types import ElectronicType, SpinType
@@ -35,7 +35,7 @@ class EOSWorkChain(WorkChain):
             cls.run_eos,
             cls.result,
         )
-        spec.output('eos', valid_type=Dict)
+        spec.output('output_parameters', valid_type=Dict)
         spec.exit_code(400, 'ERROR_NEGATIVE_NUMBER', message='The result is a negative number.')
 
     @classmethod
@@ -59,8 +59,8 @@ class EOSWorkChain(WorkChain):
             **kwargs,
         )
         builder.scf = scf
-        builder.scale = parameters["scale"]
-        builder.npoint = parameters["npoint"]
+        builder.scale = Float(parameters["scale"])
+        builder.npoint = Int(parameters["npoint"])
         return builder
 
     def run_eos(self):
@@ -109,12 +109,12 @@ class EOSWorkChain(WorkChain):
                     "B": B,
         })
         eos.store()
-        self.out("eos", eos)
+        self.out("output_parameters", eos)
 
 
 def get_builder(codes, structure, parameters, **kwargs):
     protocol = parameters["workchain"].pop('protocol', "fast")
-    pw_code = codes.get("pw_code", None)
+    pw_code = codes.get("pw")
     overrides = {
         "pw": parameters["advanced"],
     }

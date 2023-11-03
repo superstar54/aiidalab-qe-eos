@@ -1,16 +1,11 @@
-"""Results view widgets
-
-Authors:
-
-    * Xing Wang <xing.wang@psi.ch>
-"""
-
+"""Results view widgets"""
 from aiidalab_qe.common.panel import ResultPanel
 import ipywidgets as ipw
 
 
 class Result(ResultPanel):
     title = "EOS"
+    workchain_labels = ["eos"]
 
     def __init__(self, node=None, **kwargs):
         super().__init__(node=node, identifier="eos", **kwargs)
@@ -27,8 +22,8 @@ class Result(ResultPanel):
         )
         g.layout.xaxis.title = "Volume (A^3)"
         g.layout.yaxis.title = "Energy (eV)"
-        #
-        eos = self.outputs.eos.get_dict()
+        # get the output parameters
+        eos = self.outputs.eos.output_parameters.get_dict()
         volumes = eos["volumes"]
         energies = eos["energies"]
         eos = EquationOfState(volumes, energies, eos="birchmurnaghan")

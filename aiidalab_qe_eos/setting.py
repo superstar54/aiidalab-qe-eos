@@ -1,14 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Panel for ABC plugin.
-
-Authors:
-
-    * Xing Wang <xing.wang@psi.ch>
+"""Panel for EOS plugin.
 """
 import ipywidgets as ipw
 from aiidalab_qe.common.panel import Panel
-from aiida.orm import Float, Int
-
 
 class Setting(Panel):
 
@@ -53,11 +47,11 @@ class Setting(Panel):
     def get_panel_value(self):
         """Return a dictionary with the input parameters for the plugin."""
         return {
-            "scale": Float(self.scale.value),
-            "npoint": Int(self.npoint.value),
+            "scale": self.scale.value,
+            "npoint": self.npoint.value,
         }
 
-    def load_panel_value(self, input_dict):
-        """Load a dictionary with the input parameters for the plugin."""
+    def set_panel_value(self, input_dict):
+        """Set a dictionary with the input parameters for the plugin."""
         self.scale.value = input_dict.get("scale", 1)
         self.npoint.value = input_dict.get("npoint", 2)
