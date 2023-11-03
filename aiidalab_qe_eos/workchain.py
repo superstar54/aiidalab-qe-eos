@@ -132,6 +132,6 @@ def get_builder(codes, structure, parameters, **kwargs):
     return builder
 
 workchain_and_builder = {
-    "workchain": EOSWorkChain, 
+    "workchain": EOSWorkChain,
     "get_builder": get_builder,
 }

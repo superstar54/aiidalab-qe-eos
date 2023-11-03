@@ -54,7 +54,7 @@ class StructureEditor(ipw.VBox):
             ],
         )
 
-    
+
     @tl.observe("structure")
     def _observe_structure(self, change):
         """Update cell after the structure has been modified."""
